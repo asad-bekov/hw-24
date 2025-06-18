@@ -107,7 +107,7 @@ resource "yandex_compute_instance" "db" {
 | --------------- | ----------------------------------------------------- |
 | Terraform State | `yandex_compute_instance.db["main"]`, `db["replica"]` | 
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/2.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/2.png)
 
 ---
 
@@ -143,7 +143,7 @@ resource "yandex_compute_instance" "storage" {
 | ------------------ | ----------------------------- | -------- |
 | Диски + VM Storage | `additional[0..2]`, `storage` |          |
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/3.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/3.png)
 ---
 
 ## Задание 4: Динамический Ansible‑инвентарь
@@ -188,7 +188,7 @@ resource "local_file" "ansible_inventory" {
 | ----------------------- | ----------- |
 | Генерация inventory.ini | файл создан |
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/4.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/4.png)
 ---
 
 ## Задание 5: Output всех VM
@@ -238,7 +238,7 @@ resource "null_resource" "run_playbook" {
 | --------------- | --------------------------------- | 
 | Запуск плейбука | все хосты UNREACHABLE (nat=false) |
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/6.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/6.png)
 ---
 
 ## Задание 7: Удаление 3-го элемента в консоли
@@ -251,7 +251,7 @@ resource "null_resource" "run_playbook" {
 | ----------------- | ---------------------------- | 
 | Terraform Console | объект без третьего элемента |
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/7.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/7.png)
 
 ---
 
@@ -261,12 +261,13 @@ resource "null_resource" "run_playbook" {
 terraform plan
 ```
 
-| Ошибка                           | Исправление                                 |
-| -------------------------------- | ------------------------------------------- |
+| Ошибка                                                           | Исправление                                 |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
 |-[webservers]
 -%{~ for i in webservers ~}
 -${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"] platform_id=${i["platform_id "]}}
--%{~ endfor ~} | +[webservers]
+-%{~ endfor ~} | 
+|+[webservers]
 +%{ for i in webservers }
 +${i.name} ansible_host=${i.network_interface[0].nat_ip_address} platform_id=${i.platform_id}
 +%{ endfor %}| 
@@ -284,7 +285,6 @@ terraform plan
 | `terraform plan` | без ошибок                  |
 |  | планится только пересоздать `null_resource.run_playbook`|
 
-- Скриншот списка VM: `terraform plan`
 ![terraform plan](https://github.com/asad-bekov/hw-24/raw/main/img/8.png)
 ---
 
@@ -295,7 +295,6 @@ terraform plan
 | `rc01`…`rc99`                     | `> jsonencode([for n in range(1,100) : format("rc%02d", n)])`       |
 | `rc01`…`rc96`, без 0,7,8,9 + rc19 | `> jsonencode([for n in range(1, 97) : format("rc%02d", n) if n == 19 || !contains([0,7,8,9], n % 10)])` |
 
-- Скриншот списка VM: `terraform console`
 ![Выводы](https://github.com/asad-bekov/hw-24/raw/main/img/9.png)
 ---
 
