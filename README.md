@@ -197,7 +197,7 @@ resource "local_file" "ansible_inventory" {
 ![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/4.png)
 ---
 
-## Задание 5: Output всех VM
+## Задание 5*: Output всех VM
 
 ```hcl
 output "all_vms" {
@@ -215,7 +215,7 @@ output "all_vms" {
 ![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/5.png)
 ---
 
-## Задание 6\*: Ansible-плейбук через `null_resource`
+## Задание 6*: Ansible-плейбук через `null_resource`
 
 ### Playbook `playbook.yml`
 
@@ -247,7 +247,7 @@ resource "null_resource" "run_playbook" {
 ![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/6.png)
 ---
 
-## Задание 7: Удаление 3-го элемента в консоли
+## Задание 7*: Удаление 3-го элемента в консоли
 
 ```bash
 > { network_id=local.vpc.network_id, subnet_ids=[for i,id in local.vpc.subnet_ids : id if i!=2], subnet_zones=[for i,z in local.vpc.subnet_zones : z if i!=2] }
@@ -261,7 +261,7 @@ resource "null_resource" "run_playbook" {
 
 ---
 
-## Задание 8: Исправление ошибки в tpl
+## Задание 8*: Исправление ошибки в tpl
 
 ```bash
 terraform plan
@@ -286,10 +286,10 @@ terraform plan
 
 **Примечание**:
 
-1. Закрыли `}` после `${i.network_interface[0].nat_ip_address}`.
-2. Убрали пробел в ключе `"platform_id "` → `"platform_id"`.
-3. Перешли на точечную нотацию (`i.name`, `i.platform_id`) для читаемости.
-4. Упростили управляющие теги до `%{ for … }` / `%{ endfor }` (тильды не обязательны).
+1. Закрыл `}` после `${i.network_interface[0].nat_ip_address}`.
+2. Убрал пробел в ключе `"platform_id "` → `"platform_id"`.
+3. Перешел на точечную нотацию (`i.name`, `i.platform_id`) для читаемости.
+4. Упростил управляющие теги до `%{ for … }` / `%{ endfor }` (тильды не обязательны).
 
 | Проверка         | Результат после исправления |
 | ---------------- | --------------------------- |
@@ -299,7 +299,7 @@ terraform plan
 ![terraform plan](https://github.com/asad-bekov/hw-24/raw/main/img/8.png)
 ---
 
-## Задание 9\*: Генерация списков в консоли
+## Задание 9*: Генерация списков в консоли
 
 | Описание                          | Выражение                                                          |
 | --------------------------------- | ------------------------------------------------------------------ |
