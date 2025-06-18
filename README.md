@@ -54,7 +54,7 @@ terraform apply -auto-approve
 | Подсеть `yandex_vpc_subnet.develop`   | `yandex_vpc_subnet.develop`         |
 | Группа безопасности `example_dynamic` | `yandex_vpc_security_group.example` |
 
-
+![YC](https://github.com/asad-bekov/hw-24/raw/main/img/1.png)
 ---
 
 ## Задание 2: Создание VM с count и for\_each
