@@ -1,23 +1,29 @@
 # Домашнее задание "Управляющие конструкции в коде Terraform"
 
-> **Репозиторий:** [hw-24](https://github.com/asad-bekov/hw-24/tree/terraform-03)\
+> **Репозиторий:** [hw-24](https://github.com/asad-bekov/hw-24)\
 > **Автор:** Асадбеков Асадбек\
 > **Дата:** июнь 2025
 
 ---
 
-## Содержание
+## Структура
 
-1. [Чек‑лист перед началом](#чек‑лист-перед-началом)
-2. [Задание 1: Инициализация и создание сети](#задание-1-инициализация-и-создание-сети)
-3. [Задание 2: Создание VM с count и for\_each](#задание-2-создание-vm-с-count-и-for_each)
-4. [Задание 3: Диски и VM «storage»](#задание-3-диски-и-vm-storage)
-5. [Задание 4: Динамический Ansible‑инвентарь](#задание-4-динамический-ansible-инвентарь)
-6. [Задание 5: Output всех VM](#задание-5-output-всех-vm)
-7. [Задание 6\*: Ansible-плейбук через null\_resource](#задание-6-ansible-плейбук-через-null_resource)
-8. [Задание 7: Удаление 3-го элемента в консоли](#задание-7-удаление-3-го-элемента-в-консоли)
-9. [Задание 8: Исправление ошибки в tpl](#задание-8-исправление-ошибки-в-tpl)
-10. [Задание 9\*: Генерация списков в консоли](#задание-9-генерация-списков-в-консоли)
+```
+03/src/
+├── count-vm.tf
+├── disk_vm.tf
+├── for_each-vm.tf
+├── providers.tf
+├── security.tf
+├── variables.tf
+├── ansible.tf
+├── outputs.tf
+├── templates/
+│   ├── inventory.tpl
+│   └── hosts.tftpl
+├── playbook.yml
+└── inventory.ini
+```
 
 ---
 
@@ -206,7 +212,7 @@ output "all_vms" {
 | -------------------------- | -------------------- | 
 | `terraform output all_vms` | список словарей JSON | 
 
-![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/5.png
+![Terraform State](https://github.com/asad-bekov/hw-24/raw/main/img/5.png)
 ---
 
 ## Задание 6\*: Ansible-плейбук через `null_resource`
@@ -261,17 +267,22 @@ resource "null_resource" "run_playbook" {
 terraform plan
 ```
 
-| Ошибка                                                           | Исправление                                 |
-| ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
-|-[webservers]
+**Ошибка**
+
+```bash
+-[webservers]
 -%{~ for i in webservers ~}
 -${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"] platform_id=${i["platform_id "]}}
--%{~ endfor ~} | 
-|+[webservers]
+-%{~ endfor ~}
+```
+
+**Исправление**
+```bash
++[webservers]
 +%{ for i in webservers }
 +${i.name} ansible_host=${i.network_interface[0].nat_ip_address} platform_id=${i.platform_id}
-+%{ endfor %}| 
-
++%{ endfor %} 
+```
 
 **Примечание**:
 
@@ -282,8 +293,8 @@ terraform plan
 
 | Проверка         | Результат после исправления |
 | ---------------- | --------------------------- |
-| `terraform plan` | без ошибок                  |
-|  | планится только пересоздать `null_resource.run_playbook`|
+| `terraform plan` | без ошибок, планится только пересоздать `null_resource.run_playbook`|
+
 
 ![terraform plan](https://github.com/asad-bekov/hw-24/raw/main/img/8.png)
 ---
@@ -303,3 +314,5 @@ terraform plan
 ---
 
 *Все задания выполнены без хардкода, с использованием переменных, локалов, динамических блоков. 
+
+
